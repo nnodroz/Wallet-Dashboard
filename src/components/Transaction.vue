@@ -10,46 +10,18 @@
 </template>
 
 <script setup lang="ts">
-const tableData = [
-  {
-    type: 'Deposits',
-    object: '',
-    amount: '0.5 ETH',
-    time: '9/28/2025, 10:00:35 AM',
-  },
-  {
-    type: 'Deposits',
-    object: '',
-    amount: '0.5 ETH',
-    time: '9/28/2025, 10:00:35 AM',
-  },
-  {
-    type: 'Deposits',
-    object: '',
-    amount: '0.5 ETH',
-    time: '9/28/2025, 10:00:35 AM',
-  },
-  {
-    type: 'Deposits',
-    object: '',
-    amount: '0.5 ETH',
-    time: '9/28/2025, 10:00:35 AM',
-  },
-  {
-    type: 'Deposits',
-    object: '',
-    amount: '0.5 ETH',
-    time: '9/28/2025, 10:00:35 AM',
-  },
-  {
-    type: 'Deposits',
-    object: '',
-    amount: '0.5 ETH',
-    time: '9/28/2025, 10:00:35 AM',
-  },
-  
-]
+import {onMounted, computed} from 'vue';
+import { useWallet } from '../composable/useWallet'
+
+const {setAddress, transactions} = useWallet()
+
+onMounted(() => {
+  setAddress('0x22b4EA83EA2B4E63EA42165e1f3b25b4FCd2Eb6a')
+})
+
+const tableData = computed(() => transactions.value)
 </script>
+
 
 <style scoped>
 

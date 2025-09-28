@@ -7,7 +7,7 @@
     </template>
 
     <el-row :gutter="16" style="">
-      <el-col :span="8" v-for="token in tokens" :key="token.symbol">
+      <el-col :span="8" v-for="token in tokenList" :key="token.symbol">
         <el-card class="token-item" shadow="hover">
           <div class="token-top">
             <img v-if="token.icon" :src="token.icon" :alt="token.symbol" style="width:32px; height:32px;">
@@ -30,21 +30,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { computed, onMounted } from 'vue'
+import { useWallet } from '../composable/useWallet'
 
-interface Token {
-  name: string;
-  symbol: string;
-  balance: number;
-  icon?: string;
-}
+const { tokens, setAddress, fetchTokens } = useWallet()
 
-const tokens = ref<Token[]>([
-  { symbol: 'UNI', name: 'Uniswap', balance: 5600, icon: '' },
-  { symbol: 'USDC', name: 'USD Coin', balance: 1200.5, icon: '' },
-  { symbol: 'DAI', name: 'Dai Stablecoin', balance: 340.12, icon: '' }
-])
+onMounted(async () => {
+  // 测试地址：根据你的流程改由父组件或输入设置
+  const testAddr = '0x22b4EA83EA2B4E63EA42165e1f3b25b4FCd2Eb6a'
+  setAddress(testAddr)
+  await fetchTokens(testAddr)
+})
 
+const tokenList = computed(() => tokens.value)
 </script>
 
 <style scoped>
