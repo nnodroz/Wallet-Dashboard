@@ -1,7 +1,6 @@
 import { ref, watch } from 'vue'
 import axios from 'axios'
-import { N } from 'ethers'
-import { Contract } from 'ethers'
+
 
 const address = ref<string>('') // ETH地址 字符串形式 初始空
 const ethBalance = ref<string>('0') // ETH余额 字符串形式 初始0
@@ -53,6 +52,7 @@ function mapEtherscanTxsToTable(txlist: any[]) {
         const current = (address.value || '').toLowerCase()
 
         const isOutgoing = from === current && from !== ''
+        
         const type = isOutgoing ? 'Outgoing' : 'Incoming'
         const object = isOutgoing ? tx.to : tx.from
         const amount = `${weiToEthString(tx.value || '0', 6)} ETH`
@@ -126,7 +126,7 @@ async function fetchBalance(addr: string) {
     loading.value = true; error.value = null
     try {
         // 发起 GET 请求到 Etherscan API（module=account & action=balance）
-        const res = await axios.get('https://api.etherscan.io/api', {
+        const res = await axios.get('https://api.etherscan.io/v2/api?chainid=1', {
             params: {
                 module: 'account',
                 action: 'balance',
@@ -155,7 +155,7 @@ async function fetchTxs(addr: string) {
     if (!addr) { transactions.value = []; return }
     loading.value = true
     try {
-        const res = await axios.get('https://api.etherscan.io/api', {
+        const res = await axios.get('https://api.etherscan.io/v2/api?chainid=1', {
             params: {
                 module: 'account',
                 action: 'txlist',
@@ -182,7 +182,7 @@ async function fetchTxs(addr: string) {
  * - 使用 Promise.all 并行发起 fetchBalance 和 fetchTxs
  */
 async function fetchAll(addr: string) {
-    await Promise.all([fetchBalance(addr),fetchTxs(addr)])
+    await Promise.all([fetchBalance(addr), fetchTxs(addr), fetchTokens(addr)])
 }
 
 /**

@@ -10,14 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import {onMounted, computed} from 'vue';
+import {computed} from 'vue';
 import { useWallet } from '../composable/useWallet'
 
-const {setAddress, transactions} = useWallet()
-
-onMounted(() => {
-  setAddress('0x22b4EA83EA2B4E63EA42165e1f3b25b4FCd2Eb6a')
-})
+const {transactions} = useWallet()
 
 const tableData = computed(() => transactions.value)
 </script>

@@ -30,17 +30,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { useWallet } from '../composable/useWallet'
 
-const { tokens, setAddress, fetchTokens } = useWallet()
+const { tokens } = useWallet()
 
-onMounted(async () => {
-  // 测试地址：根据你的流程改由父组件或输入设置
-  const testAddr = '0x22b4EA83EA2B4E63EA42165e1f3b25b4FCd2Eb6a'
-  setAddress(testAddr)
-  await fetchTokens(testAddr)
-})
 
 const tokenList = computed(() => tokens.value)
 </script>
