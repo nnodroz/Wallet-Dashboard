@@ -17,7 +17,7 @@
             </div>
           </div>
           <el-statistic
-            :value="token.balance"
+            :value="token.formatted"
             :precision="2"
             :prefix="token.symbol"
             value-style="color: #67C23A; font-size: 18px;"
